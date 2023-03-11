@@ -1,0 +1,51 @@
+# input data
+V_all = []
+V_degrees_all = []
+number_of_graphs = int(input())
+
+for i in range(number_of_graphs):
+    V = int(input())
+    V_degrees = list(map(int, input().split(' ')))
+
+    V_all.append(V)
+    V_degrees_all.append(V_degrees)
+
+
+def V_degree_to_R_view(V_degrees, n):
+    """
+    Take a given V_degree and transfrom graph into the form os sequantional edges.
+    V_degrees: sequence of vertices degree
+    n: number of vertices
+
+    return:
+    1) print graph
+    2) save correct view with edges
+    """
+
+    # init
+    table = [n * [0] for i in range(n)]
+
+    # assign edge using information in degrees
+    for j in range(n):
+        for k in range(j + 1, n):
+
+            # see at j and k vertices and assign edge if possible
+            if (V_degrees[j] > 0 and V_degrees[k] > 0):
+                V_degrees[j] = V_degrees[j] - 1
+                V_degrees[k] = V_degrees[k] - 1
+                table[j][k] = 1
+                table[k][j] = 1
+    # print(table)
+
+    for i in range(n):
+        for j in range(n):
+
+            # select upper part of our table
+            if i < j and table[i][j] == 1:
+                print(f"{i + 1} {j + 1}")
+
+
+for i in range(number_of_graphs):
+    # number of edges = sum(degrees) / 2
+    print(sum(V_degrees_all[i]) // 2)
+    V_degree_to_R_view(V_degrees_all[i], V_all[i])
